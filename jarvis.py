@@ -169,7 +169,7 @@ if __name__ == '__main__':
                 print(e)
                 speak("Sorry, I am unable to send this email.")
                 
-        elif 'no thanks' in query:
+        elif 'no' in query:
             speak("Sure, have a great day!")
             sys.exit()
             
