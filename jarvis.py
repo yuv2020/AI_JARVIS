@@ -11,7 +11,8 @@ import webbrowser
 import pywhatkit as kit
 import smtplib
 import sys
-
+import time
+import pyjokes
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -37,7 +38,7 @@ def takecommand():
     with sr.Microphone() as source:
         print("Listening...")
         r.pause_threshold = 1
-        audio = r.listen(source, timeout=3, phrase_time_limit=5)
+        audio = r.listen(source, timeout=8, phrase_time_limit=10)
         
 
     try:
@@ -52,13 +53,14 @@ def takecommand():
 #Wish function
 def wish():
     hour = int(datetime.datetime.now().hour)
+    tt = time.strftime("%I:%M %p")
     
     if hour>=0 and hour<=12:
-        speak(f"Good morning! Sir.")
+        speak(f"Good morning! Sir. {tt}")
     elif hour > 12 and hour < 16:
-        speak(f"Good afternoon! Sir.")
+        speak(f"Good afternoon! Sir. {tt}")
     else:
-        speak(f"Good evening! Sir.")
+        speak(f"Good evening! Sir. {tt}")
         
     speak("I am jarvis sir! Please tell me How can i assist you todays.")
     
@@ -172,6 +174,37 @@ if __name__ == '__main__':
         elif 'no' in query:
             speak("Sure, have a great day!")
             sys.exit()
+            
+        # To close any application
+        elif "close notepad" in query:
+            speak("ok sir, closing notepad ")
+            os.system("taskkill /f /im notepad.exe")
+            
+        # Set an alarm
+        elif "set alarm" in query:
+            speak("Sir, what time should I set for you?")
+            nn = int(datetime.datetime.now().hour)
+            if nn == 22:
+                music_dir = "E:\\VIDEOS SONG"
+                songs = os.listdir(music_dir)
+                os.startfile(os.path.join(music_dir, songs[0]))
+                
+        # To find a joke
+        elif "tell me a joke" in query:
+            joke = pyjokes.get_joke()
+            speak(joke)
+        
+        elif "shut down the system" in query:
+            speak("Sure, I am shutting down the system.")
+            os.system("shutdown /s /t 2")
+            
+        elif "restart the system" in query:
+            speak("Sure, I am restarting the system.")
+            os.system("shutdown /r /t 2")
+            
+        elif "sleep" in query:
+            speak("Sure, I am going to sleep. Good night")
+            os.system("rundll32.exe user32.dll,LockWorkStation")
             
         speak("Sir, do yo have any other work.")
                 
